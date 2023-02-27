@@ -1,0 +1,138 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2638
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica-Oblique;\f2\fswiss\fcharset0 Helvetica;
+\f3\fswiss\fcharset0 Helvetica-BoldOblique;\f4\froman\fcharset0 Times-Roman;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;\red255\green255\blue255;
+}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c100000\c100000\c99971\c0;\cssrgb\c100000\c100000\c100000;
+}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid1\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listlevel\levelnfc4\levelnfcn4\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{lower-alpha\}.}{\leveltext\leveltemplateid2\'02\'01.;}{\levelnumbers\'01;}\fi-360\li1440\lin1440 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid101\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listlevel\levelnfc4\levelnfcn4\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{lower-alpha\}.}{\leveltext\leveltemplateid102\'02\'01.;}{\levelnumbers\'01;}\fi-360\li1440\lin1440 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid201\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid3}
+{\list\listtemplateid4\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid301\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{hyphen\}}{\leveltext\leveltemplateid302\'01\uc0\u8259 ;}{\levelnumbers;}\fi-360\li1440\lin1440 }{\listname ;}\listid4}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}{\listoverride\listid4\listoverridecount0\ls4}}
+\paperw11900\paperh16840\margl1440\margr1440\vieww15380\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs24 \cf0 \
+INSTRUCTION DOCUMENT\
+How to Generate a CSV File for Finetuning from Facebook Messenger & Twitter Data + Running Finetuning\
+
+\f1\i\b0 compiled by Nastasia Griffioen on February 22nd 2023\
+\
+
+\f0\i0\b IMPORTANT
+\f2\b0 : In order to run this file, you will 
+\f3\i\b need
+\f0\i0  
+\f2\b0 to at least have some Facebook Messenger data files (see instructions below for how to obtain those). You can opt out of using Twitter data, but unfortunately at this point in time the scraper script (script 1) does not accommodate for a lack of Facebook Messenger data just yet.
+\f1\i \
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f2\i0 \cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b \cf0 SOFTWARE PREP
+\f2\b0 \
+\pard\tx220\tx720\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\li720\fi-720\pardirnatural\partightenfactor0
+\ls1\ilvl0\cf0 {\listtext	1.	}Download R from 
+\f0\b https://cran.r-project.org/
+\f2\b0 .\
+{\listtext	2.	}Download Visual Studio Code (ONLY needed if you want to explore the script, running of the script will be done from Terminal)\
+{\listtext	3.	}Make sure Python 3 is installed on your machine. See here for steps: 
+\f0\b https://docs.python-guide.org/starting/install3/osx/
+\f2\b0 \
+{\listtext	4.	}Set up OpenAI\
+\pard\tx940\tx1440\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\li1440\fi-1440\pardirnatural\partightenfactor0
+\ls1\ilvl1\cf0 {\listtext	a.	}Create an OpenAI account on https://beta.openai.com/signup \
+{\listtext	b.	}Open your Terminal and install the openAI api using the following command
+\fs22 :
+\fs24 \cf2  
+\f0\b \cb3 \expnd0\expndtw0\kerning0
+pip install --upgrade openai
+\f2\b0 . Note: you might need to substitute 
+\f0\b pip
+\f2\b0  with 
+\f0\b pip3
+\f2\b0  in order for it to work with Python 3. 
+\f4\fs30 \cf4 \cb1 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f2\fs24 \cf0 \kerning1\expnd0\expndtw0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b \cf0 DATA DOWNLOAD
+\f2\b0 \
+\pard\tx220\tx720\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\li720\fi-720\pardirnatural\partightenfactor0
+\ls2\ilvl0\cf0 {\listtext	1.	}Log in to your Facebook account and download your data file on your laptop/desktop.\
+\pard\tx940\tx1440\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\li1440\fi-1440\pardirnatural\partightenfactor0
+\ls2\ilvl1\cf0 {\listtext	a.	}Click on your profile image in the top right\
+{\listtext	b.	}Click on Settings & Privacy\
+{\listtext	c.	}Click on Settings\
+{\listtext	d.	}Click on Privacy\
+{\listtext	e.	}Click on Your Facebook Information\
+{\listtext	f.	}Click on View next to Download Profile Information\
+{\listtext	g.	}Under Select File Options, choose Format JSON and Date Range All Time\
+{\listtext	h.	}Under Select Information to Download, click Deselect All\
+{\listtext	i.	}Once all data types are deselected, reselect Messages\
+{\listtext	j.	}Scroll to the very bottom and hit Request a Download. Note: it may take some time for the download to be ready, so do this in advance of the workshop. \
+\pard\tx220\tx720\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\li720\fi-720\pardirnatural\partightenfactor0
+\ls2\ilvl0\cf0 {\listtext	2.	}On your Desktop, create a folder called Finetuning (or any other name you desire, just make sure you adapt future steps accordingly).\
+{\listtext	3.	}Go to Github and download the required scripts. https://github.com/Gryphire/GPTscraper Save them to your Finetuning folder.\
+{\listtext	4.	}Once you have downloaded your data package, which will be in the form of a .zip file, open it up.\
+\pard\tx940\tx1440\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\li1440\fi-1440\pardirnatural\partightenfactor0
+\ls2\ilvl1\cf0 {\listtext	a.	}Go to Messages subfolder, then to Inbox. \
+{\listtext	b.	}You will see folder names with the Facebook username of your conversation partner, each with a data file within. All of the message data files have the same name; \'91message_1.json\'92. \
+{\listtext	c.	}Extract a minimum of 10 JSON files from within these named folders and paste them into your Finetuning folder. \
+{\listtext	d.	}To ensure the files will be recognised by the scraper script we\'92ll use, rename the files to \'91fb_message_1\'92, \'91fb_message_2\'92, \'91fb_message_3\'92, etc. \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b \cf0 RUNNING THE SCRAPER SCRIPTS
+\f2\b0 \
+\pard\tx220\tx720\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\li720\fi-720\pardirnatural\partightenfactor0
+\ls3\ilvl0\cf0 {\listtext	1.	}Time to run the first script, which is 1JSONParseToOutput.py. Open Terminal (or Command Line Prompt) and ensure you\'92re in the Finetuning folder. On Mac, use \'91cd Desktop/Finetuning\'92 to do this. Remember to change this command based on your chosen name for your folder. \
+{\listtext	2.	}Still in the Terminal, now type in 
+\f0\b python 1JSONParseToOutput.py
+\f2\b0  and hit Enter to run.  When the script is running, you will see some messages indicating the progress of the script. You will also be asked to specify your name (by answering in the Terminal), as well as your Twitter username (make sure you check what your username is exactly) if you also want some Twitter data scraped. Twitter data scraping is not necessary and may be skipped if desired.\
+{\listtext	3.	}Check in your Finetuning folder that four new files have been generated, all starting with output_.\
+{\listtext	1.	}Now it\'92s time to move on to the second script. This is an R script, which we also will be running from the Terminal. Given that you have installed R, your machine will now be able to run R scripts from the terminal. You do this by typing the following command in your terminal (again, make sure you are still located in your Finetuning folder): 
+\f0\b Rscript 2FormattingOutputToCSV.R.
+\f2\b0  While the script is running, you will be first asked to specify your directory through a dialog prompt: make sure you select your Finetuning folder. You will then also be asked to indicate again your name from a list of detected names. \
+{\listtext	2.	}Check that the script has succeeded by taking a look in your Finetuning folder. You should see a new file there, called \'91trainingdata.csv\'92. Open it up, and you will see two columns: the first column being called \'91prompt\'92 and being empty, and the second column being called \'91completion\'92, with all of your Facebook and, if you opted to scrape those, Twitter messages in that column. Now you\'92re ready to start finetuning!\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b \cf0 FINETUNING
+\f2\b0 \
+\pard\tx220\tx720\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\li720\fi-720\pardirnatural\partightenfactor0
+\ls4\ilvl0\cf0 {\listtext	1.	}Open your Terminal again if necessary, and make sure you are in your Finetuning folder (use the pwd command if needed to check). \
+{\listtext	2.	}We now first need to ensure your .csv trainingdata file is formatted be\cf2 fore we can ask OpenAI to finetune a model on it. Luckily OpenAI has a tool for this, which we will run from the Terminal. Type in: 
+\f0\b \expnd0\expndtw0\kerning0
+openai tools fine_tunes.prepare_data -f trainingdata.csv
+\f2\b0 . You will see that as a result of this operation a .JSONL file will be added to your Finetuning folder.\
+\pard\tx940\tx1440\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\li1440\fi-1440\pardirnatural\partightenfactor0
+\ls4\ilvl1\cf2 \kerning1\expnd0\expndtw0 {\listtext	\uc0\u8259 	}OpenAI might ask you to respond to some questions. It might highlight some duplicate rows, and other formatting requests (of which it will take care itself if you agree). \cf4 \expnd0\expndtw0\kerning0
+\
+\pard\tx220\tx720\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\li720\fi-720\pardirnatural\partightenfactor0
+\ls4\ilvl0\cf0 \kerning1\expnd0\expndtw0 {\listtext	3.	}Before we can finetune, OpenAi needs to know your API key. Get this from your profile on 
+\f0\b https://platform.openai.com/overview,
+\f2\b0  under View API Keys. Copy the API key. \
+{\listtext	4.	}In your Terminal, type in 
+\f0\b \cf2 \expnd0\expndtw0\kerning0
+export OPENAI_API_KEY="<OPENAI_API_KEY>\'94
+\f2\b0 , and substitute <OPENAI_API_KEY> with the key you just copied from the OpenAI website. Hit Enter. 
+\f4\fs30 \cf4 \
+\ls4\ilvl0
+\f2\fs24 \cf0 \kerning1\expnd0\expndtw0 {\listtext	5.	}Finally, time to initiate finetuning! In your Terminal, type: 
+\f0\b \cf2 \expnd0\expndtw0\kerning0
+openai api fine_tunes.create -t trainingdata_prepared.jsonl -m davinci
+\f2\b0 . No need to specify the whole path, as long as your current directory within the Terminal is still your Finetuning folder.\
+\pard\tx220\tx720\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\li720\fi-720\pardirnatural\partightenfactor0
+\ls4\ilvl0\cf2 \kerning1\expnd0\expndtw0 {\listtext	6.	}You shall see that the OpenAI API will start finetuning. Using the commands offered in the Terminal you will be able to check back in every once in a while to track the progress of your finetuning job.\
+{\listtext	7.	}When you see that the finetuning job is complete, log back in to OpenAI at https://platform.openai.com/overview and head to the Playground. In the Playground, you will see that you can select a Model in the right hand toolbar. Scroll down to find a model with the date of when you finetuned your model (name will look something like 
+\f0\b davinci:ft-personal-yyyy-mm-dd-
+\f2\b0 etc.\
+}
