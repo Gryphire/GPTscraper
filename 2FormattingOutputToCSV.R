@@ -8,6 +8,7 @@ library(dplyr)
 library(stringr)
 library(tidyverse)
 library(tcltk)
+library(qdapRegex) #To remove emoji and emoticons
 
 # Function for selecting directory with a contingency for some rare Windows use cases
 choose_directory = function(caption = 'Please select your Finetuning folder') {
@@ -80,7 +81,9 @@ clean_tweets <- function(x) {
     str_remove_all("^RT:? ") %>%
     # Replace any newline characters with a space
     str_replace_all("\\\n", " ") %>%
-    # Remove any trailing whitespace around the text
+    # Remove emoticons and emoji
+    iconv("latin1", "ASCII", sub="") %>%
+    # Remove any trailing white space around the text
     str_trim("both")
 }
 
