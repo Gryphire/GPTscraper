@@ -3,7 +3,7 @@ INSTRUCTION DOCUMENT
 How to Generate a CSV File for Finetuning from Facebook Messenger & Twitter Data + Running Finetuning
 compiled by Nastasia Griffioen on February 22nd 2023, updated on March 1st 2023.
 
-IMPORTANT: In order to run this file, you will need to at least have some Facebook Messenger data files (see instructions below for how to obtain those). You can opt out of using Twitter data, but unfortunately at this point in time the scraper script (script 1) does not accommodate for a lack of Facebook Messenger data just yet.
+IMPORTANT: Currently only supports Facebook Messenger and/or Twitter data. You can use either Facebook Messenger files if you have those locally saved in your folder (see below) and/or Twitter data (no local data log files needed for that). 
 
 
 SOFTWARE PREP
@@ -58,6 +58,7 @@ RUNNING THE SCRAPER SCRIPTS
 	1.	Time to run the first script, which is 1JSONParseToOutput.py. Open Terminal (or Command Prompt) and ensure you’re in the Finetuning folder. On Mac, use ‘cd Desktop/Finetuning’ to do this. On Windows, this command will look more like cd C:\Users\<username>\Desktop. Remember to change this command based on your chosen name for your folder. Fun fact to help you remember this command: ‘cd’ stands for ‘change directory’. (:
 	2.	Still in the Terminal, now type in python 1JSONParseToOutput.py and hit Enter to run.  When the script is running, you will see some messages indicating the progress of the script. You will also be asked to specify your name (by answering in the Terminal), as well as your Twitter username (make sure you check what your username is exactly) if you also want some Twitter data scraped. Twitter data scraping is not necessary and may be skipped if desired.
 	3.	Check in your Finetuning folder that four new files have been generated, all starting with output_.
+		⁃	IMPORTANT: If for some reason you want to run Script 1 multiple times (e.g., because something didn’t work), make sure you remove the output_ files that were previously generated (if there are any) before rerunning the script. Otherwise a new run of the script will append data to the existing files, which in most cases is not desirable and can cause duplication. 
 	4.	Now it’s time to move on to the second script. This is an R script, which we also will be running from the Terminal. Given that you have installed R, your machine will now be able to run R scripts from the terminal. You do this by typing the following command in your terminal (again, make sure you are still located in your Finetuning folder): Rscript 2FormattingOutputToCSV.R. While the script is running, you will be first asked to specify your directory through a dialog prompt: make sure you select your Finetuning folder. You will then also be asked to indicate again your name from a list of detected names. 
 	5.	Check that the script has succeeded by taking a look in your Finetuning folder. You should see a new file there, called ‘trainingdata.csv’. Open it up, and you will see two columns: the first column being called ‘prompt’ and being empty, and the second column being called ‘completion’, with all of your Facebook and, if you opted to scrape those, Twitter messages in that column. Now you’re ready to start finetuning!
 
