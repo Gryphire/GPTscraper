@@ -1,6 +1,6 @@
 INSTRUCTION DOCUMENT
 How to Generate a CSV File for Finetuning from Facebook Messenger & Twitter Data + Running Finetuning
-compiled by Nastasia Griffioen on February 22nd 2023, updated on March 10th 2023.
+compiled by Nastasia Griffioen on February 22nd 2023, updated on March 16th 2023.
 
 IMPORTANT: Currently only supports Facebook Messenger and/or Twitter data. You can use either Facebook Messenger files if you have those locally saved in your folder (see below) and/or Twitter data (no local data log files needed for that). 
 
@@ -19,10 +19,7 @@ IMPORTANT: Currently only supports Facebook Messenger and/or Twitter data. You c
 	2.	On your Desktop, create a folder called Finetuning (or any other name you desire, just make sure you adapt future steps accordingly).
 	3.	Go to Github and download the required script. https://github.com/Gryphire/GPTscraper Save them to your Finetuning folder.
 	4.	Once you have downloaded your data package, which will be in the form of a .zip file, open it up.
-		a.	Go to Messages subfolder, then to Inbox. 
-		b.	You will see folder names with the Facebook username of your conversation partner, each with a data file within. All of the message data files have the same name; ‘message_1.json’. 
-		c.	To ensure the files will be recognised by the scraper script we’ll use, rename the files to ‘data_fb_message_1’, ‘data_fb_message_2’, ‘data_fb_message_3’, etc. 
-		d.	Extract a minimum of 10 JSON files from within these named folders and paste them into your Finetuning folder. 
+		a.	Select the Messages folder, and copy-paste it into your Finetuning folder. 
 
 2. SOFTWARE PREP
 	1.	Set up OpenAI (for both Mac and Windows users):
@@ -35,7 +32,7 @@ IMPORTANT: Currently only supports Facebook Messenger and/or Twitter data. You c
 			⁃	Once you do this, you should have all necessary Xcode tools installed!
 		b.	For Homebrew: 
 			⁃	Follow the instructions in this video: https://drive.google.com/file/d/19fApnIlCoWIKPVIP7EbpgHH6HNorXSCb/view?usp=share_link Note: The Homebrew installation might take some time (e.g., 10 minutes or more), so keep that in mind.  
-	4.	Installing Python 3 (for both Mac and Windows users):
+    	3. Installing Python 3 (for both Mac and Windows users):
 		a.	For Mac users:
 			⁃	Checking if Python 3 is already installed on your machine. To check this, go to the Terminal and type: ‘python3 --version’. If it returns a Python version as response, you know you have Python 3 installed already.
 			⁃	If you find that you need to install Python 3, do this through the Terminal once more: ‘brew install python3. Please note: the installation of Python 3 may take up to 30 minutes, so keep this in mind. 
@@ -53,12 +50,10 @@ IMPORTANT: Currently only supports Facebook Messenger and/or Twitter data. You c
 3. RUNNING THE SCRAPER SCRIPTS
 	1.	Time to run the first script, which is 1JSONParseToOutput.py. Open Terminal (or Command Prompt) and ensure you’re in the Finetuning folder. On Mac, use ‘cd Desktop/Finetuning’ to do this. On Windows, you can try the same command. If it doesn’t work, you might have to specify the full path (more like ‘cd C:\Users\<username>\Desktop\Finetuning’). Remember to change this command based on your chosen name for your folder. Fun fact to help you remember this command: ‘cd’ stands for ‘change directory’. (:
 		⁃	You can see that you’ve succeeded in changing the directory if the path before > changed.
-	2.	Still in the Terminal, now type in ‘python 1JSONParseToOutput.py’ and hit Enter to run.  When the script is running, you will see some messages indicating the progress of the script. 
-		⁃	You will be first asked whether you want to scrape you Facebook Messenger data
-		⁃	You will also be asked to indicate your name from a list.
-		⁃	When scraping Twitter data, you will be asked to indicate your username (make sure you don’t include the @, and make sure to double check you have spelled your username correctly)
-		⁃	Twitter data scraping is not necessary and may be skipped if desired.
+	2.	Still in the Terminal, now type in ‘python 1JSONParseToOutput.py’ and hit Enter to run.  If this does not work for you, try ‘python3 1JSONparseToOutput.py’ instead. 
+		⁃	When the script is running, you will see messages and questions be printed to the Terminal/Command Prompt console. Please answer these as required to help the script perform its tasks.
 	3.	Check that the script has succeeded by taking a look in your Finetuning folder. You should see a new file there, called ‘trainingdata.csv’. Open it up, and you will see two columns: the first column being called ‘prompt’ and being empty, and the second column being called ‘completion’, with all of your messages in that column. Now you’re ready to start finetuning!
+
 
 4. FINETUNING
 	1.	Open your Terminal/Command Prompt again if necessary, and make sure you are in your Finetuning folder (for Terminal, use the pwd command if needed to check). 
@@ -69,7 +64,7 @@ IMPORTANT: Currently only supports Facebook Messenger and/or Twitter data. You c
 	4.	Setting the OpenAI API Key:
 		⁃	On Mac: In your Terminal, type in export OPENAI_API_KEY="<OPENAI_API_KEY>”, and substitute <OPENAI_API_KEY> with the key you just copied from the OpenAI website. Hit Enter. 
 		⁃	On Windows: In the Command prompt, type in setx OPENAI_API_KEY “<KEY>”, and substitute <KEY> with the key you just copied from the OpenAI website (make sure you leave the “ in the command). Hit Enter. 
-		⁃	For Windows users there is then one more step necessary to process this key setup: close the Command Prompt window and restart the Command Prompt. Remember to re-navigate into your Finetuning folder. For some reason, restarting the Command Prompt is necessary on Windows in order to Windows to process the change.
+		⁃	For Windows users there is then one more step necessary to process this key setup: close the Command Prompt window and restart the Command Prompt. Remember to re-navigate into your Finetuning folder. For some reason, restarting the Command Prompt is necessary on Windows in order to Windows to process the change. Please note: when you do restart the Command Prompt, you will not see anything to indicate that the change has been processed. You have to trust the process. (:
 	5.	Finally, time to initiate finetuning! In your Terminal, type: openai api fine_tunes.create -t trainingdata_prepared.jsonl -m davinci. No need to specify the whole path, as long as your current directory within the Terminal is still your Finetuning folder.
 	6.	You shall see that the OpenAI API will start finetuning. Finetuning may take a long time.  Using the commands offered in the Terminal you will be able to check back in every once in a while to track the progress of your finetuning job.
 	7.	When you see that the finetuning job is complete, log back in to OpenAI at https://platform.openai.com/overview and head to the Playground. In the Playground, you will see that you can select a Model in the right hand toolbar. Scroll down to find a model with the date of when you finetuned your model (the model’s name will look something like davinci:ft-personal-yyyy-mm-dd-etc.)
