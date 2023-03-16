@@ -1,3 +1,8 @@
+# Welcome the user to the script (:
+print('*------------------------------*')
+print('Welcome to this social media data scraper script!')
+print('*------------------------------*')
+
 #-----------------------------------------#
 ## IMPORTING THE NECESSARY LIBRARIES
 import sys
@@ -9,6 +14,8 @@ import subprocess
 from glob import glob
 from difflib import get_close_matches
 import numpy as np
+from tkinter import Tk
+from tkinter.filedialog import askdirectory
 
 # Check if more_itertools package is already present, if not then first install then import
 try:
@@ -47,10 +54,6 @@ except:
 # cleaning the dataset further down the script gives a false positive warning
 pd.options.mode.chained_assignment = None  # default='warn'
 
-# Select files in your current directory that begin with 'data_'
-dataFiles = glob('data_*')
-# Welcome the user to the script (:
-print('Welcome to this social media data scraper script!')
 
 #-----------------------------------------#
 ## PROCESS FOR DATA THAT NEEDS TO BE RETRIEVED FROM LOCAL DATA LOG FILES
@@ -61,7 +64,8 @@ FBMesDecisionMade = 0
 # Check for valid response
 while FBMesDecisionMade == 0:
   # Ask user if they want to use Facebook Messenger data files or now (if not, skip to next data type)
-  FBMesDecision = input("Would you like to scrape data from your local Facebook Messenger data files? Y/N ")
+  FBMesDecision = input("Would you like to scrape data from your local Facebook Messenger data files? [Y/N] ")
+  print('*------------------------------*')
   if (FBMesDecision == 'Y') or (FBMesDecision == 'y') or(FBMesDecision == 'N') or (FBMesDecision == 'n'):
     FBMesDecisionMade = 1
   else:
@@ -74,29 +78,62 @@ fbmescounter = 0
 #Preparing an empty dataset to fill based out of temporary storage
 outputdf = pd.DataFrame(columns=["sender", "message"])
 
-# Loop over files in list
-for each_file in dataFiles:
+# Initialize a variable to store cleaned-up messages in
+newdata = []
+messages = []
 
-  # Initialize a variable to store cleaned-up messages in
-  newdata = []
-  messages = []
+# If the user indicated to want to use FB Messenger data, do the following:
+if (FBMesDecision == 'Y') or (FBMesDecision == 'y'):
+  
+  #-----------------------------------------# 
+  ## FACEBOOK MESSENGER DATA
+  #-----------------------------------------# 
 
-  # If the user indicated to want to use FB Messenger data, do the following:
-  if (FBMesDecision == 'Y') or (FBMesDecision == 'y'):
-    
-    #-----------------------------------------# 
-    ## FACEBOOK MESSENGER DATA
-    #-----------------------------------------# 
+  # Prepare an empty list for the data file paths to be stored in
+  dataFiles = []
+  # First define the search directory (that is ./messages/inbox/)
+  currentdir = os.getcwd()
+  searchdir = currentdir + '/messages/inbox/'
+
+  # # Ask user whether they want to run through all files or whether they
+  # ownSelection = input('You can either (A) let the script collect info from all of the message data files that it can find, or (B) you can point it to a specific folder in which you have placed selected message data files. What do you choose? [A/B] ')
+  # print('*------------------------------*')
+  # # Act on the user's input; ask to specify folder if they've chosen that they want to choose themselves
+  # if (ownSelection == 'B') or (ownSelection == 'b'):
+  #   searchdir = askdirectory(title='Select the subfolder in which you have placed your selected messages_1.json files')
+  #   print(searchdir)
+  # else:
+  #   # First define the search directory (that is ./messages/inbox/)
+  #   currentdir = os.getcwd()
+  #   searchdir = currentdir + '/messages/inbox/'
+
+  ## SCANNING FOR MESSAGES_1.HTML FILES
+  # Now that we've defined the search directory, scan it for .html files
+  for dirpath, dirnames, filenames in os.walk(searchdir):
+    for filename in [f for f in filenames if f.endswith(".json")]:
+        dataFiles.append(os.path.join(dirpath, filename))
+
+  # Ask user how many Facebook Messenger data files they want to scrape
+  print(str({len(dataFiles)}) + ' Facebook Messenger files have been found.')
+  print('*------------------------------*')
+  N = input('How many data files do you want to scrape?\nIf you want to scrape all the files, choose the total number indicated above.\nIf you choose a number lower than the total, the first x files will be retrieved.\nPlease enter the number and hit Enter. ')
+  print('*------------------------------*')
+
+  # Loop over files in list
+  for each_file in dataFiles[0:int(N)]:
 
     with open(each_file, 'r') as f:
       textdata = json.load(f)
   
     # Work through each Facebook Messenger file:
-    if each_file.find("fb_mes") != -1:
+    if each_file.find("messages") != -1:
       
       # Update file counter (because we want to run a name check later, but only once)
       fbmescounter += 1
+      
       print('Currently working on Facebook Messenger data file number ' + str(fbmescounter))
+      print(each_file)
+      print('*------------------------------*')
 
       # Extract sender data from data file
       senders = map(lambda sender: sender['sender_name'], textdata['messages'])
@@ -113,7 +150,8 @@ for each_file in dataFiles:
         # Next we turn the set back into a list so we can access the items mentioned within (this is not possible with a set)
         listOfSenders = list(setOfSenders)
         # Present these options to the user so they can select their own name
-        usersNameIndex = int(input('The following participants have been detected in your first Facebook Messenger file: '+ str(listOfSenders) +'. Please tell us which of these is you by typing in the number associated with the name position in the list (e.g., 1 if the first name is yours): '))
+        usersNameIndex = int(input('The following participants have been detected in your first Facebook Messenger file:\n'+ str(listOfSenders) +'\nPlease tell us which of these is you by typing in the number associated\nwith the name position in the list (e.g., 1 if the first name is yours): '))
+        print('*------------------------------*')
         # Now we can save the user's  name from the list of senders. 
         # Since Python is zero-indexed, we need to correct the input number to 
         # match the positions as Python counts them (i.e., first position is indexed as 0)
@@ -152,8 +190,10 @@ for each_file in dataFiles:
 # Let the user know where we are in the process
 if FBMesDecision == 'y' or FBMesDecision == 'Y':
   print('Facebook Messenger data have been extracted from local files.')
+  print('*------------------------------*')
 else:
   print('No Facebook Messenger data will be collected, moving on!')
+  print('*------------------------------*')
 
 #-----------------------------------------#
 ## TWITTER DATA
@@ -163,7 +203,8 @@ TwitDecisionMade = 0
 # Check for valid response
 while TwitDecisionMade == 0:
   # Ask user if they want to use Twitter data
-  TwitDecision = input("Would you like to scrape data from your Twitter account? This will collect your Tweets. Y/N ")
+  TwitDecision = input("Would you like to scrape data from your Twitter account? This will collect your Tweets. [Y/N] ")
+  print('*------------------------------*')
   if (TwitDecision == 'Y') or (TwitDecision == 'y') or(TwitDecision == 'N') or (TwitDecision == 'n'):
     TwitDecisionMade = 1
   else:
@@ -176,9 +217,11 @@ if (TwitDecision == 'Y') or (TwitDecision == 'y'):
   while TwitNameCorrect == 0:
       # Query user for the Twitter user name, if not provided skip the rest of the Twitter code
       TwitName = input("Please enter your Twitter username and hit Enter: ")
-      TwitNameCheck = input("You entered '" + TwitName +"' as your Twitter username. Is this correct? Y/N ")
+      print('*------------------------------*')
+      TwitNameCheck = input("You entered '" + TwitName +"' as your Twitter username. Is this correct? [Y/N] ")
       if (TwitNameCheck == 'Y') or (TwitNameCheck == 'y'):
-        print('Wonderful, we will proceed with scraping your Twitter posts now. Please stand by, this may take a while.')
+        print('Wonderful, we will proceed with scraping your Twitter posts now.\nPlease stand by, this may take a while.')
+        print('*------------------------------*')
         TwitNameCorrect = 1
       elif (TwitNameCheck == 'N') or (TwitNameCheck == 'n'):
         print('Ok, give it another try!')
@@ -208,17 +251,20 @@ if (TwitDecision == 'Y') or (TwitDecision == 'y'):
   #  f.write(dfTwitAsString)
   
   print('Twitter scraping completed!')
+  print('*------------------------------*')
 
 # MOVING ON TO THE REST OF THE SCRIPT, IF APPLICABLE
 else:
 
   print("No Twitter data will be collected, moving on!")
+  print('*------------------------------*')
 
 #-----------------------------------------#
 
 ## SCRAPING COMPLETE!
 
 print('The end of the scraping script has been reached. Smiley day to ya!')
+print('*------------------------------*')
 
 # DATA CLEANUP IS ONLY NEEDED IF AT LEAST SOME DATA HAVE BEEN GATHERED
 # Since it is technically possible that a user answers 'no' to both gathering FB Messenger data and Twitter data,
