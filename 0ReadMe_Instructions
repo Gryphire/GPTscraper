@@ -1,6 +1,6 @@
 INSTRUCTION DOCUMENT
 How to Generate a CSV File for Finetuning from Facebook Messenger & Twitter Data + Running Finetuning
-compiled by Nastasia Griffioen on February 22nd 2023, updated on March 16th 2023.
+compiled by Nastasia Griffioen on February 22nd 2023, updated on March 10th 2023.
 
 IMPORTANT: Currently only supports Facebook Messenger and/or Twitter data. You can use either Facebook Messenger files if you have those locally saved in your folder (see below) and/or Twitter data (no local data log files needed for that). 
 
@@ -25,7 +25,9 @@ IMPORTANT: Currently only supports Facebook Messenger and/or Twitter data. You c
 		d.	Extract a minimum of 10 JSON files from within these named folders and paste them into your Finetuning folder. 
 
 2. SOFTWARE PREP
-	1.	Installing Xcode and Homebrew (for Mac users only!):
+	1.	Set up OpenAI (for both Mac and Windows users):
+		a.	Create an OpenAI account on https://beta.openai.com/signup 
+	2.	Installing Xcode and Homebrew (for Mac users only!):
 		a.	For Xcode:
 			⁃	Check if you have Xcode installed. In your Terminal, type ‘xcode-select -p’. If a path is returned, you have Xcode already installed.
 			⁃	If you still need to get Xcode, go to the App Store on your Mac, search for Xcode and download+install from the App Store.
@@ -33,7 +35,7 @@ IMPORTANT: Currently only supports Facebook Messenger and/or Twitter data. You c
 			⁃	Once you do this, you should have all necessary Xcode tools installed!
 		b.	For Homebrew: 
 			⁃	Follow the instructions in this video: https://drive.google.com/file/d/19fApnIlCoWIKPVIP7EbpgHH6HNorXSCb/view?usp=share_link Note: The Homebrew installation might take some time (e.g., 10 minutes or more), so keep that in mind.  
-	2.	Installing Python 3 (for both Mac and Windows users):
+	4.	Installing Python 3 (for both Mac and Windows users):
 		a.	For Mac users:
 			⁃	Checking if Python 3 is already installed on your machine. To check this, go to the Terminal and type: ‘python3 --version’. If it returns a Python version as response, you know you have Python 3 installed already.
 			⁃	If you find that you need to install Python 3, do this through the Terminal once more: ‘brew install python3. Please note: the installation of Python 3 may take up to 30 minutes, so keep this in mind. 
@@ -47,16 +49,6 @@ IMPORTANT: Currently only supports Facebook Messenger and/or Twitter data. You c
 			⁃	Once installation is complete, open your Command Prompt (NOTE: NOT your Python prompt, but the Command Prompt!) and run the following command (but remember to insert your own username first): cd C:\Users\<username>\AppData\Local\Programs\Python. 
 			⁃	Now that you are located in the installation folder, check that the installation has gone well by typing in: python.exe. If this command returns a Python version that matches the one you download from the Python website, the installation has gone to plan. 
 			⁃	Make sure you exit the command prompt because now you are in the python interpreter. Exit and restart the Command Prompt.
-	3.	Installing necessary Python libraries that will be used in the scraping script. The libraries to be installed are 
-		a.	more_itertools: type ‘pip install more_itertools’ in the Terminal (if this does not work, try it with pip3 instead of pip)
-		b.	snscrape: type ‘pip install snscrape’ in the Terminal (if this does not work, try it with pip3 instead of pip)
-		c.	pandas: type ‘pip install pandas’ in the Terminal (if this does not work, try it with pip3 instead of pip)
-		d.	emoji: type ‘pip install emoji’ in the Terminal (if this does not work, try it with pip3 instead of pip)
-		e.	unidecode: type ‘pip install unidecode’ in the Terminal
-		f.	if any other library errors come up when running the 1st script, try simply installing the relevant library with the above commands: pip install [library]. 
-	4.	Set up OpenAI (for both Mac and Windows users):
-		a.	Create an OpenAI account on https://beta.openai.com/signup 
-		b.	Open your Terminal or Command Prompt and install the openAI API using the following command: ‘pip install --upgrade openai’ Note: you might need to substitute pip with pip3 in order for it to work with Python 3. 
 
 3. RUNNING THE SCRAPER SCRIPTS
 	1.	Time to run the first script, which is 1JSONParseToOutput.py. Open Terminal (or Command Prompt) and ensure you’re in the Finetuning folder. On Mac, use ‘cd Desktop/Finetuning’ to do this. On Windows, you can try the same command. If it doesn’t work, you might have to specify the full path (more like ‘cd C:\Users\<username>\Desktop\Finetuning’). Remember to change this command based on your chosen name for your folder. Fun fact to help you remember this command: ‘cd’ stands for ‘change directory’. (:
