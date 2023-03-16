@@ -1,29 +1,52 @@
 #-----------------------------------------#
 ## IMPORTING THE NECESSARY LIBRARIES
-
+import sys
 import json
 import re
 import traceback
 import os
-import pandas as pd
-# The warnings of chained assignment are disabled here because 
-# cleaning the dataset further down the script gives a false positive warning
-pd.options.mode.chained_assignment = None  # default='warn'
-import numpy as np
-import sys
-import emoji
-import unidecode
-
-# Important: FIRST install more_itertools in Visual Studio's terminal using 'npm install more_itertools'
-from more_itertools import map_except
+import subprocess
 from glob import glob
 from difflib import get_close_matches
+import numpy as np
 
-# Prior to running, make sure snscrape is installed via VSCode terminal using pip3 install snscrape
-import snscrape.modules.twitter as snt
+# Check if more_itertools package is already present, if not then first install then import
+try:
+  from more_itertools import map_except
+except:
+   subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'more_itertools'])
+   from more_itertools import map_except
+
+# Check if snscrape package is already present, if not then first install then import
+try:
+  # Sometimes snscrape gets updated which may break the tweet retrieval
+  #os.system("python -m pip install --upgrade snscrape")
+  import snscrape.modules.twitter as snt
+except:
+   subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'snscrape'])
+   import snscrape.modules.twitter as snt
+
+# Check if snscrape package is already present, if not then first install then import
+try:
+  import pandas as pd
+except:
+  subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'pandas'])
+  import pandas as pd
+
+# HERE, we also already install OpenAI's API if it's not on people's machine yet, 
+# so users son't have to do this manually
+# This package will NOT be used within this script, but hopefully this way it still gets recognised
+try:
+  'openai' in sys.modules
+except:
+  os.system("python -m pip install --upgrade openai")
 
 #-----------------------------------------#
 ## GENERAL VARIABLE SETUP
+# The warnings of chained assignment are disabled here because 
+# cleaning the dataset further down the script gives a false positive warning
+pd.options.mode.chained_assignment = None  # default='warn'
+
 # Select files in your current directory that begin with 'data_'
 dataFiles = glob('data_*')
 # Welcome the user to the script (:
@@ -269,5 +292,3 @@ if (FBMesDecision == "Y") or (FBMesDecision == "y") or (TwitDecision == "Y") or 
 
   # Save this target dataframe to a csv file
   outputdf_toCSV.to_csv('trainingdata.csv',index=False)
-
-  
