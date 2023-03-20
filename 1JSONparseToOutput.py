@@ -91,6 +91,8 @@ if (FBMesDecision == 'Y') or (FBMesDecision == 'y'):
 
   # Prepare an empty list for the data file paths to be stored in
   dataFiles = []
+  # Create an empty list to be filled with small dataframes
+  outputdflist = []
   # First define the search directory (that is ./messages/inbox/)
   currentdir = os.getcwd()
   searchdir = currentdir + '/messages/inbox/'
@@ -168,14 +170,19 @@ if (FBMesDecision == 'Y') or (FBMesDecision == 'y'):
       
       #Temporarily storing the data
       dictdf = pd.DataFrame(full_dict["messages"])
-      #print(dictdf.head())
 
       #Filling the dataset with sender name and message per row
+      # Go through all rows
       for index, row in dictdf.iterrows():
-        outputdf = outputdf.append({"sender": dictdf.iloc[index]['sender_name'],
-                                    "message": dictdf.iloc[index]['content']}, ignore_index=True)
+        tempoutputdf = pd.DataFrame({"sender": [dictdf.iloc[index]['sender_name']],
+                                    "message": [dictdf.iloc[index]['content']]})
+        outputdflist.append(tempoutputdf)
+      # Turn this into the master output dataframe
+      outputdf = pd.concat(outputdflist, ignore_index=True)
+
       #User check
       #print(outputdf)
+      
       try:
         for index, s in outputdf['message'].items():
           try:
