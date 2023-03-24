@@ -6,7 +6,9 @@ compiled by Nastasia Griffioen on February 22nd 2023, updated on March 24th 2023
 Currently only supports Facebook Messenger and/or Twitter data. You can use either Facebook Messenger files if you have those locally saved in your folder (see below) and/or Twitter data (no local data log files needed for that). 
 
 ### Instruction Steps
-#### DATA DOWNLOAD - DO THIS WELL IN TIME BEFORE SCRAPING, SINCE FACEBOOK DOWNLOAD MAY TAKE A DAY
+#### DATA DOWNLOAD 
+Note: Do this well in advance before scraping, since the Facebook Data Download may take a while to be ready for downloading.
+
 1.	Log in to your Facebook account and download your data file on your laptop/desktop.
     * Click on your profile image in the top right
     * Click on Settings & Privacy
