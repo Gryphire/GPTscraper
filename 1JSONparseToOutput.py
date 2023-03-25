@@ -18,35 +18,35 @@ from tkinter import Tk
 from tkinter.filedialog import askdirectory
 
 # Check if more_itertools package is already present, if not then first install then import
-try:
-  from more_itertools import map_except
-except:
-   subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'more_itertools'])
-   from more_itertools import map_except
+#try:
+#  from more_itertools import map_except
+#except:
+subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'more_itertools'])
+from more_itertools import map_except
 
 # Check if snscrape package is already present, if not then first install then import
-try:
+#try:
   # Sometimes snscrape gets updated which may break the tweet retrieval
   #os.system("python -m pip install --upgrade snscrape")
-  import snscrape.modules.twitter as snt
-except:
-   subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'snscrape'])
-   import snscrape.modules.twitter as snt
+#  import snscrape.modules.twitter as snt
+#except:
+subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'snscrape'])
+import snscrape.modules.twitter as snt
 
 # Check if snscrape package is already present, if not then first install then import
-try:
-  import pandas as pd
-except:
-  subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'pandas'])
-  import pandas as pd
+#try:
+#  import pandas as pd
+#except:
+subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'pandas'])
+import pandas as pd
 
 # HERE, we also already install OpenAI's API if it's not on people's machine yet, 
 # so users son't have to do this manually
 # This package will NOT be used within this script, but hopefully this way it still gets recognised
-try:
-  'openai' in sys.modules
-except:
-  os.system("python -m pip install --upgrade openai")
+#try:
+#  'openai' in sys.modules
+#except:
+os.system("python -m pip install --upgrade openai")
 
 #-----------------------------------------#
 ## GENERAL VARIABLE SETUP
